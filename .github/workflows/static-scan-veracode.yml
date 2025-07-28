@@ -1,0 +1,47 @@
+name: StaticScanVeraCode
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+
+  veracode-static-scan:
+    runs-on: ubuntu-latest
+    environment: staticscan
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+
+      - name: Restore .NET tools
+        run: dotnet tool restore
+
+      - name: Install Node tools
+        run: npm install -g vsce webpack webpack-cli
+
+      - name: Build VSIX (linux-x64)
+        run: dotnet cake --target=vsix --configuration=release --arch=linux-x64
+
+      - name: Zip VSIX file for Veracode
+        run: 7z a dotrush_extension.zip artifacts/DotRush.linux-x64.vsix
+
+      - name: Get timestamp
+        run: echo TIMESTAMP=$(date +%Y-%m-%d_%H:%M:%S) >> $GITHUB_ENV
+
+      - name: Veracode Upload And Scan
+        uses: veracode/veracode-uploadandscan-action@0.2.6
+        with:
+          appname: DotRush_Extension
+          createprofile: false
+          filepath: dotrush_extension.zip
+          version: ${{env.TIMESTAMP}}
+          vid: ${{ secrets.VERACODE_API_KEY_ID }}
+          vkey: ${{ secrets.VERACODE_API_KEY_SECRET }}
+          deleteincompletescan: 1
+
