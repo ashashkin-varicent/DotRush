@@ -41,7 +41,7 @@ jobs:
       - name: Veracode Upload And Scan
         uses: veracode/veracode-uploadandscan-action@0.2.6
         with:
-          appname: DotRush_Extension
+          appname: DotRush
           createprofile: false
           filepath: dotrush_extension.zip
           version: ${{env.TIMESTAMP}}
