@@ -32,8 +32,8 @@ jobs:
       - name: Build VSIX (linux-x64)
         run: dotnet cake --target=vsix --configuration=release --arch=linux-x64
 
-      - name: Zip VSIX file for Veracode
-        run: 7z a dotrush_extension.zip artifacts/*
+      - name: Zip entire project for Veracode
+        run: 7z a dotrush_extension.zip . '-xr!.git' '-xr!artifacts'
 
       - name: Get timestamp
         run: echo TIMESTAMP=$(date +%Y-%m-%d_%H:%M:%S) >> $GITHUB_ENV
