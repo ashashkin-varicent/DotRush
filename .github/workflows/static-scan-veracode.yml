@@ -18,19 +18,19 @@ jobs:
         with:
           submodules: true
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.x'
+      # - name: Setup .NET
+      #   uses: actions/setup-dotnet@v4
+      #   with:
+      #     dotnet-version: '10.x'
 
-      - name: Restore .NET tools
-        run: dotnet tool restore
+      # - name: Restore .NET tools
+      #   run: dotnet tool restore
 
-      - name: Install Node tools
-        run: npm install -g vsce webpack webpack-cli
+      # - name: Install Node tools
+      #   run: npm install -g vsce webpack webpack-cli
 
-      - name: Build VSIX (linux-x64)
-        run: dotnet cake --target=vsix --configuration=release --arch=linux-x64
+      # - name: Build VSIX (linux-x64)
+      #   run: dotnet cake --target=vsix --configuration=release --arch=linux-x64
 
       - name: Zip entire project for Veracode
         run: 7z a dotrush_extension.zip . '-xr!.git' '-xr!artifacts'
