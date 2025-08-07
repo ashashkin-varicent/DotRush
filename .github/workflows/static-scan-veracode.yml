@@ -23,12 +23,6 @@ jobs:
         with:
           dotnet-version: '10.x'
 
-      - name: Download and Install Veracode CLI
-        run: |
-          curl -fsS https://tools.veracode.com/veracode-cli/install | sh
-          export PATH="$HOME/.veracode-cli/bin:$PATH"
-          echo "$HOME/.veracode-cli/bin" >> $GITHUB_PATH
-
       - name: Restore .NET tools
         run: dotnet tool restore
 
@@ -38,37 +32,8 @@ jobs:
       - name: Build VSIX (linux-x64)
         run: dotnet cake --target=vsix --configuration=release --arch=linux-x64
 
-      - name: Prepare source for auto-packaging
-        run: |
-          # Remove unnecessary files that might interfere with packaging
-          rm -rf .git/ artifacts/ 2>/dev/null || true
-          find . -name "node_modules" -type d -exec rm -rf {} + 2>/dev/null || true
-          find . -name "bin" -type d -exec rm -rf {} + 2>/dev/null || true
-          find . -name "obj" -type d -exec rm -rf {} + 2>/dev/null || true
-
-
-      - name: Auto-package with Veracode CLI
-        env:
-          VERACODE_API_KEY_ID: ${{ secrets.VERACODE_API_KEY_ID }}
-          VERACODE_API_KEY_SECRET: ${{ secrets.VERACODE_API_KEY_SECRET }}
-        run: |
-          # Create output directory for packaged artifacts
-          mkdir -p veracode-artifacts
-
-          # Use Veracode CLI to auto-package the project
-          /home/runner/work/DotRush/DotRush/veracode package \
-            --source . \
-            --output ./veracode-artifacts \
-            --trust \
-            --verbose
-
-      - name: List generated artifacts
-        run: |
-          echo "Generated Veracode artifacts:"
-          ls -la veracode-artifacts/
-
       - name: Zip entire project for Veracode
-        run: 7z a veracode-auto-pack-DotRush-dotnet-js.zip veracode-artifacts/ '-xr!.git' '-xr!artifacts'
+        run: 7z a veracode-auto-pack-DotRush-dotnet-js.zip . '-xr!.git' '-xr!artifacts'
 
       - name: Get timestamp
         run: echo TIMESTAMP=$(date +%Y-%m-%d_%H:%M:%S) >> $GITHUB_ENV
