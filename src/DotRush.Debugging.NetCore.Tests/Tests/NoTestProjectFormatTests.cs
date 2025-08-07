@@ -6,10 +6,10 @@ namespace DotRush.Debugging.NetCore.Tests;
 public class NoTestProjectFormatTests : TestFixture {
     private TestExplorer TestExplorer = null!;
 
-    public NoTestProjectFormatTests() : base("NoTestProject") { 
+    public NoTestProjectFormatTests() : base("NoTestProject") {
         TestProjectFileContent = $@"<Project Sdk=""Microsoft.NET.Sdk"">
             <PropertyGroup>
-                <OutputType>Exe</OutputType>
+                <OutputType>Library</OutputType>
                 <TargetFramework>net8.0</TargetFramework>
             </PropertyGroup>
 

@@ -9,7 +9,7 @@ public class TestFixture {
     protected string TestProjectFilePath => Path.Combine(TestProjectPath, $"{TestProjectName}.csproj");
     protected string TestProjectFileContent { get; set; } = @"<Project Sdk=""Microsoft.NET.Sdk"">
         <PropertyGroup>
-            <OutputType>Exe</OutputType>
+            <OutputType>Library</OutputType>
             <TargetFramework>net8.0</TargetFramework>
         </PropertyGroup>
 
@@ -29,7 +29,7 @@ public class TestFixture {
     public void Setup() {
         if (Directory.Exists(TestProjectPath))
             Directory.Delete(TestProjectPath, true);
-        
+
         Directory.CreateDirectory(TestProjectPath);
         CreateProject(TestProjectFilePath);
     }
