@@ -6,10 +6,10 @@ namespace DotRush.Debugging.NetCore.Tests;
 public class LegacyProjectFormatTests : TestFixture {
     private TestExplorer TestExplorer = null!;
 
-    public LegacyProjectFormatTests() : base("LegacyProjectFormat") { 
+    public LegacyProjectFormatTests() : base("LegacyProjectFormat") {
         TestProjectFileContent = $@"<Project ToolVersion=""8.0"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
             <PropertyGroup>
-                <OutputType>Exe</OutputType>
+                <OutputType>Library</OutputType>
                 <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
             </PropertyGroup>
 

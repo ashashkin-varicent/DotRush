@@ -27,10 +27,14 @@ Task("clean")
 	});
 
 Task("server")
-	.Does(() => DotNetPublish(_Path.Combine(RootDirectory, "src", "DotRush.Roslyn.Server", "DotRush.Roslyn.Server.csproj"), new DotNetPublishSettings {
-		MSBuildSettings = new DotNetMSBuildSettings { AssemblyVersion = version },
-		Configuration = configuration,
-		Runtime = runtime,
+	.Does(() => DotNetPublish(_Path.Combine(RootDirectory, "src", "DotRush.Roslyn.Server", "DotRush.Roslyn.Server.csproj"), new DotNetPublishSettings
+    {
+        OutputDirectory = _Path.Combine(VSCodeExtensionDirectory, "bin", "LanguageServer"), // Explicit output directory
+        MSBuildSettings = new DotNetMSBuildSettings { AssemblyVersion = version },
+        Configuration = configuration,
+        Runtime = runtime,
+        SelfContained = true, // Include runtime dependencies
+        PublishSingleFile = false, // Keep DLLs separate
 	}))
 	.Does(() => {
 		var input = _Path.Combine(VSCodeExtensionDirectory, "bin", "LanguageServer");
@@ -69,7 +73,7 @@ Task("diagnostics")
 Task("test")
 	.IsDependentOn("clean")
 	.Does(() => DotNetTest(_Path.Combine(RootDirectory, "src", "DotRush.Roslyn.Workspaces.Tests", "DotRush.Roslyn.Workspaces.Tests.csproj"),
-		new DotNetTestSettings {  
+		new DotNetTestSettings {
 			Configuration = configuration,
 			Verbosity = DotNetVerbosity.Quiet,
 			ResultsDirectory = ArtifactsDirectory,
@@ -77,7 +81,7 @@ Task("test")
 		}
 	))
 	.Does(() => DotNetTest(_Path.Combine(RootDirectory, "src", "DotRush.Roslyn.CodeAnalysis.Tests", "DotRush.Roslyn.CodeAnalysis.Tests.csproj"),
-		new DotNetTestSettings {  
+		new DotNetTestSettings {
 			Configuration = configuration,
 			Verbosity = DotNetVerbosity.Quiet,
 			ResultsDirectory = ArtifactsDirectory,
@@ -85,7 +89,7 @@ Task("test")
 		}
 	))
 	.Does(() => DotNetTest(_Path.Combine(RootDirectory, "src", "DotRush.Debugging.NetCore.Tests", "DotRush.Debugging.NetCore.Tests.csproj"),
-		new DotNetTestSettings {  
+		new DotNetTestSettings {
 			Configuration = configuration,
 			Verbosity = DotNetVerbosity.Quiet,
 			ResultsDirectory = ArtifactsDirectory,
@@ -116,7 +120,7 @@ void ExecuteCommand(string command, string arguments) {
 		throw new Exception("Command exited with non-zero exit code.");
 }
 void EnsureFileDeleted(string path) {
-	if (FileExists(path)) 
+	if (FileExists(path))
 		DeleteFile(path);
 }
 

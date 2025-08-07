@@ -3,7 +3,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>$(ServerTargetFramework)</TargetFramework>
-		<OutputType>Exe</OutputType>
+		<OutputType>Library</OutputType>
 		<AssemblyName>DotRush</AssemblyName>
 		<SelfContained>true</SelfContained>
 		<NoWarn>$(NoWarn);MSB3277</NoWarn>

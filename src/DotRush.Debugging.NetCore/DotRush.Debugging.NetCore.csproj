@@ -2,7 +2,7 @@
   <Import Project="..\Common.Build.props" />
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AssemblyName>dotrushde</AssemblyName>
     <OutputPath>$(AssetsPath)TestExplorer</OutputPath>
     <PublishDir>$(OutputPath)</PublishDir>
