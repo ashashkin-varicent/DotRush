@@ -31,12 +31,10 @@ jobs:
 
       - name: Build VSIX (linux-x64)
         run: |
-            dotnet cake --target=server --configuration=release --arch=linux-x64
-            dotnet cake --target=debugging --configuration=release --arch=linux-x64
-            dotnet cake --target=diagnostics --configuration=release --arch=linux-x64
+            dotnet cake --target=vsix --configuration=release --arch=linux-x64
 
       - name: Zip entire project for Veracode
-        run: 7z a veracode-auto-pack-DotRush-dotnet-js.zip . '-xr!.git' '-xr!artifacts'
+        run: 7z a veracode-auto-pack-DotRush-dotnet-js.zip extension/bin '-xr!.git' '-xr!artifacts'
 
       - name: Get timestamp
         run: echo TIMESTAMP=$(date +%Y-%m-%d_%H:%M:%S) >> $GITHUB_ENV
